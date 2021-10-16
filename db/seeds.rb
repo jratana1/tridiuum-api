@@ -3,5 +3,27 @@
 #
 # Examples:
 #
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+
+  
+require 'faker'
+require "securerandom"
+
+Hospital.create(name: 'Tridiuum Health')
+
+# generate 100 Patients
+(1..100).each do |id|
+    Patient.create!(
+# each user is assigned an id from 1-100
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        mrn: Faker::IDNumber.valid
+    )
+end
+
+(1..40).each do |id|
+    Provider.create!(
+# each user is assigned an id from 1-40
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name
+    )
+end
