@@ -1,6 +1,6 @@
 class ProvidersController < ApplicationController
     def index
-        providers = Provider.get_providers
+        providers = Provider.get_all
 
         render json: providers
     end
