@@ -5,5 +5,6 @@ class CreateJoinTablePatientProviders < ActiveRecord::Migration[6.0]
       t.integer :provider_id
 
       t.timestamps
+    end
   end
 end
