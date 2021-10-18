@@ -11,4 +11,15 @@ class ApplicationRecord < ActiveRecord::Base
 
     ActiveRecord::Base.connection.execute(query)
   end
+
+  def self.destroy(id)
+    query = "
+    DELETE 
+    FROM 
+      #{self.name + "s"}
+    WHERE
+      Id = #{id}"
+
+    ActiveRecord::Base.connection.execute(query)
+  end
 end
