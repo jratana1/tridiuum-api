@@ -21,4 +21,12 @@ class PatientsController < ApplicationController
 
         render json:patients
     end
+
+    def create
+        Patient.create(params[:patient])
+
+        patients = Patient.get_all
+
+        render json:patients
+    end
 end

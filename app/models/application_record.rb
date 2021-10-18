@@ -34,11 +34,37 @@ class ApplicationRecord < ActiveRecord::Base
     end
 
     columns = columns.chomp(",")
-    byebug
+
     query = "
     UPDATE #{self.name + "s"}
     SET #{columns}
     WHERE Id = #{record[:id]}"
+
+    ActiveRecord::Base.connection.execute(query)
+  end
+
+  def self.create(record)
+
+    keys = ""
+    values = ""
+
+    record.each do |name, value|
+      if name != "id"
+      keys = keys + "#{name},"
+      values = values + "'#{value}',"
+      end
+    end
+
+    keys = keys + "created_at,updated_at"
+    values = values + "'#{Time.current.utc}','#{Time.current.utc}'"
+
+
+    query = "
+    INSERT
+    INTO #{self.name + "s"}
+    (#{keys})
+    VALUES
+    (#{values});"
 
     ActiveRecord::Base.connection.execute(query)
   end
