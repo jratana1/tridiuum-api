@@ -5,6 +5,15 @@ class PatientsController < ApplicationController
         render json: patients
     end
 
+    def update
+
+        Patient.edit(params[:patient])
+
+        patients = Patient.get_all
+
+        render json:patients
+    end
+
     def destroy
         Patient.destroy(params[:id])
         
