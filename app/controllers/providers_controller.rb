@@ -1,15 +1,33 @@
 class ProvidersController < ApplicationController
     def index
-        providers = Provider.get_all
+        # providers = Provider.get_all
+
+        # need to get hospital associations
+        providers = Provider.get_with_hospitals
 
         render json: providers
     end
 
     def update
 
-        Provider.edit(params[:provider])
+        record = params[:record].except(:hospitals)
+        Provider.edit(record)
 
-        providers = Provider.get_all
+        #get all associations from join table
+        all_assoc = Provider.get_all_associations("hospital", record[:id])
+
+        #Delete associations not in params update
+        all_assoc.entries.each do |association|
+            if !(params[:associations].any? {|h| h["id"] == association["hospital_id"]})
+                HospitalProvider.destroy(association["id"])
+            end
+        end
+
+        params[:associations].each do |association|
+            Provider.associate("hospital", "provider", association[:id], record[:id])
+        end
+
+        providers = Provider.get_with_hospitals
 
         render json:providers
     end
@@ -17,7 +35,7 @@ class ProvidersController < ApplicationController
     def destroy
         Provider.destroy(params[:id])
         
-        providers = Provider.get_all
+        providers = Provider.get_with_hospitals
 
         render json:providers
     end
@@ -32,7 +50,7 @@ class ProvidersController < ApplicationController
             Provider.associate("hospital", "provider", association[:id], provider_id)
         end
 
-        providers = Provider.get_all
+        providers = Provider.get_with_hospitals
 
         render json:providers
     end
