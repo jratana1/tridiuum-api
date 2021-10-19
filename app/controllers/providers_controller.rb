@@ -7,7 +7,7 @@ class ProvidersController < ApplicationController
 
     def update
 
-        Prvider.edit(params[:provider])
+        Provider.edit(params[:provider])
 
         providers = Provider.get_all
 
