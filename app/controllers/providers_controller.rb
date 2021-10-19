@@ -23,9 +23,19 @@ class ProvidersController < ApplicationController
     end
 
     def create
-        Provider.create(params[:provider])
+        record = params[:record].except(:id, :mrn)
+        Provider.create(record)
+
+        provider_id = Provider.get_last.getvalue(0,0)
+
+        params[:associations].each do |association|
+            Provider.associate("hospital", "provider", association[:id], provider_id)
+        end
+
         providers = Provider.get_all
 
         render json:providers
     end
+
+
 end
