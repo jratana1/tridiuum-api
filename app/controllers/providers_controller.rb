@@ -1,7 +1,5 @@
 class ProvidersController < ApplicationController
     def index
-        # providers = Provider.get_all
-
         # need to get hospital associations
         providers = Provider.get_with_hospitals
 
@@ -9,7 +7,6 @@ class ProvidersController < ApplicationController
     end
 
     def update
-
         record = params[:record].except(:hospitals)
         Provider.edit(record)
 
@@ -22,7 +19,7 @@ class ProvidersController < ApplicationController
                 HospitalProvider.destroy(association["id"])
             end
         end
-
+        #Insert update, method ensures uniqueness
         params[:associations].each do |association|
             Provider.associate("hospital", "provider", association[:id], record[:id])
         end

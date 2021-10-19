@@ -15,7 +15,7 @@ class ApplicationRecord < ActiveRecord::Base
   def self.destroy(id)
     string = self.name.split /(?=[A-Z])/
     table =string.join("_")
-    byebug
+
     query = "
     DELETE 
     FROM 
