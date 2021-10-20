@@ -3,8 +3,22 @@ class Provider < ApplicationRecord
         providers_hash= {providers: []}
 
         query = "
-        SELECT Providers.created_at, Providers.id, Providers.first_name, Providers.last_name, Hospitals.id AS Hospital_id, Hospitals.name
+        SELECT Providers.created_at,
+                Providers.id,
+                Providers.first_name,
+                Providers.last_name,
+                Hospitals.id AS Hospital_id,
+                Hospitals.name, 
+                (SELECT
+                    COUNT(*)
+                FROM
+                    Patient_providers
+                WHERE
+                    provider_id=Providers.id
+                ) as cnt
         FROM Providers
+        LEFT JOIN Patient_providers
+        ON Providers.Id=Patient_providers.provider_id
         LEFT JOIN Hospital_providers
         ON Providers.Id=Hospital_providers.provider_id
         LEFT JOIN Hospitals
@@ -27,6 +41,7 @@ class Provider < ApplicationRecord
                 provider = {id: row["id"],
                             last_name: row["last_name"],
                             first_name: row["first_name"],
+                            count: row["cnt"],
                             hospitals: [{
                                         id: row["hospital_id"],
                                         name: row["name"]
