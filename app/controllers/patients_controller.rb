@@ -30,6 +30,12 @@ class PatientsController < ApplicationController
 
     def destroy
         Patient.destroy(params[:id])
+
+        all_assoc = Patient.get_all_associations("provider", params[:id])
+        #Delete associations not in params update
+        all_assoc.entries.each do |association|
+                        PatientProvider.destroy(association["id"])
+        end
       
         patients = Patient.get_with_providers
 

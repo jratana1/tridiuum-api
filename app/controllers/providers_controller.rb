@@ -40,6 +40,16 @@ class ProvidersController < ApplicationController
         
         providers = Provider.get_with_hospitals
 
+        all_assoc = Provider.get_all_associations("hospital", params[:id])
+        all_assoc.entries.each do |association|
+                HospitalProvider.destroy(association["id"])
+        end
+
+        all_assoc = Provider.get_all_associations("patient", params[:id])
+        all_assoc.entries.each do |association|
+                PatientProvider.destroy(association["id"])
+        end
+
         render json:providers
     end
 
