@@ -9,6 +9,9 @@ require 'faker'
 require "securerandom"
 
 Hospital.create(name: 'Tridiuum Health')
+Hospital.create(name: 'Ratana Quacks')
+Hospital.create(name: 'Final Resting Place')
+Hospital.create(name: 'Deep Sleep')
 
 # generate 100 Patients
 (1..100).each do |id|
