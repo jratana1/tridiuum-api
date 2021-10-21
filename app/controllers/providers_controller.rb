@@ -13,7 +13,7 @@ class ProvidersController < ApplicationController
     end
 
     def update
-        record = params[:record].except(:hospitals)
+        record = params[:record].except(:hospitals, :count)
         Provider.edit(record)
 
         #get all associations from join table
