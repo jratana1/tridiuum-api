@@ -12,6 +12,19 @@ class ApplicationRecord < ActiveRecord::Base
     ActiveRecord::Base.connection.execute(query)
   end
 
+  def self.get(id)
+    query = "
+    SELECT
+      *
+    FROM
+      #{self.name + "s"}
+    WHERE
+    Id = #{id}"
+
+    ActiveRecord::Base.connection.execute(query)
+
+  end
+
   def self.destroy(id)
     string = self.name.split /(?=[A-Z])/
     table =string.join("_")

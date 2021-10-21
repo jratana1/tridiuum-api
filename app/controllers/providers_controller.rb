@@ -6,6 +6,12 @@ class ProvidersController < ApplicationController
         render json: providers
     end
 
+    def show
+        provider = Provider.show(params[:id])
+
+        render json: provider
+    end
+
     def update
         record = params[:record].except(:hospitals)
         Provider.edit(record)
